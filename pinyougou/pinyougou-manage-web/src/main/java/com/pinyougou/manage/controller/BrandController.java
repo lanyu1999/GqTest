@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbBrand;
 import com.pinyougou.sellergoods.service.BrandService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +17,12 @@ public class BrandController {
     private BrandService brandService;
 
     @RequestMapping("/findAll")
-    public List<TbBrand> findAll () {
-        return  brandService.queryAll();
+    public List<TbBrand> findAll() {
+        return brandService.findAll();
+    }
+
+    @GetMapping("/testPage")
+    public List<TbBrand> testPage(Integer page, Integer rows) {
+        return (List<TbBrand>) brandService.findPage(page,rows).getRows();
     }
 }
