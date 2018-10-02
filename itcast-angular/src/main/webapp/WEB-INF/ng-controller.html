@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ng-app</title>
+    <script src="../js/angular.min.js"></script>
+    <script type="text/javascript">
+        
+        var app = angular.module("app",[]);
+        
+        app.controller("mycontroller",function ($scope) {
+            $scope.add = function () {
+               $scope.z =  parseInt($scope.x)+parseInt($scope.y);
+            }
+        })
+        
+        
+    </script>
+    
+    
+    
+</head>
+<body ng-app="app" ng-controller="mycontroller">
+
+x:<input ng-model="x"/><br>
+y:<input ng-model="y"/><br>
+<button ng-click="add()">点击计算</button>
+x+y={{z}}
+
+</body>
+</html>

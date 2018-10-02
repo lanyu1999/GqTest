@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ng-repeat</title>
+    <script src="../js/angular.min.js"></script>
+    <script type="text/javascript">
+        var app = angular.module("app",[]);
+        app.controller("myController",function ($scope) {
+           $scope.list = [1,2,3,4,5];
+           $scope.persons = [
+               {"id":100,"name":"传智播客","gender":"男","age":18},
+               {"id":101,"name":"传智播客","gender":"男","age":18},
+               {"id":102,"name":"传智播客","gender":"男","age":18}
+
+
+           ]
+        })
+
+
+    </script>
+
+
+
+</head>
+<body ng-app="app" ng-controller="myController">
+<div ng-repeat="num in list">
+    {{num}}<br>
+</div>
+自定义对象集合<br>
+
+<table>
+    <tr>
+        <td>id</td>
+        <td>名字</td>
+        <td>性别</td>
+        <td>年龄</td>
+    </tr>
+    <tr ng-repeat="user in persons">
+        <td>{{user.id}}</td>
+        <td>{{user.name}}</td>
+        <td>{{user.gender}}</td>
+        <td>{{user.age}}</td>
+
+    </tr>
+
+
+
+</table>
+
+
+</body>
+</html>
