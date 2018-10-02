@@ -35,7 +35,7 @@
             };
             // 加载表格数据
             $scope.reloadList = function () {
-                $scope.findPage($scope.paginationConf.currentPage,$scope.paginationConf.itemsPerPage);
+                $scope.findPage($scope.paginationConf.currentPage, $scope.paginationConf.itemsPerPage);
             };
 
             // 分页查询
@@ -47,6 +47,53 @@
                     // 更新总记录数
                     $scope.paginationConf.totalItems = response.total;
                 });
+            };
+            //保存
+            $scope.save = function () {
+                var method = "add";
+                if ($scope.entity.id != null) {
+                    method = "update";
+                }
+                $http.post("../brand/" + method + ".do", $scope.entity).success(function (response) {
+                    if (response.success) {
+                        $scope.reloadList();
+                    } else {
+                        alert(response.message);
+                    }
+                })
+            };
+            //根据主键查询
+            $scope.findOne = function (id) {
+                $http.get("../brand/findOne.do?id=" + id).success(function (response) {
+                    $scope.entity = response;
+                })
+            };
+            $scope.selectIds = [];
+            //检查选框的状态
+            $scope.updateSelection = function ($event, id) {
+                if ($event.target.checked) {
+                    $scope.selectIds.push(id);
+                } else {
+                    var index = $scope.selectIds.indexOf(id);
+                    $scope.selectIds.splice(index, 1);
+                }
+            };
+            //根据ID批量删除
+            $scope.delete = function () {
+                if ($scope.reloadList.length < 1) {
+                    alert("请选择需要删除品牌");
+                    return;
+                }
+                if (confirm("确定要删除选中的品牌吗?")) {
+                    $http.get("../brand/delete.do?ids=" + $scope.selectIds).success(function (response) {
+                        if (response.success) {
+                            $scope.reloadList();
+                            $scope.selectIds = [];
+                        } else {
+                            alert(response.message);
+                        }
+                    })
+                }
             };
 
 
@@ -73,9 +120,11 @@
             <div class="form-group form-inline">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" title="新建" data-toggle="modal"
-                            data-target="#editModal"><i class="fa fa-file-o"></i> 新建
+                            data-target="#editModal" ng-click="entity={}"><i class="fa fa-file-o"></i> 新建
                     </button>
-                    <button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
+                    <button type="button" class="btn btn-default" title="删除" ng-click="delete()"><i
+                            class="fa fa-trash-o"></i> 删除
+                    </button>
                     <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i
                             class="fa fa-refresh"></i> 刷新
                     </button>
@@ -102,15 +151,17 @@
                 <th class="sorting">品牌首字母</th>
                 <th class="text-center">操作</th>
             </tr>
-            </thead>l
+            </thead>
+            l
             <tbody>l
             <tr ng-repeat="entity in list">
-                <td><input type="checkbox"></td>
+                <td><input type="checkbox" ng-click="updateSelection($event,entity.id)"></td>
                 <td>{{entity.id}}</td>
                 <td>{{entity.name}}</td>
                 <td>{{entity.firstChar}}</td>
                 <td class="text-center">
-                    <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal">修改
+                    <button type="button" ng-click="findOne(entity.id)" class="btn bg-olive btn-xs" data-toggle="modal"
+                            data-target="#editModal">修改
                     </button>
                 </td>
             </tr>
@@ -140,16 +191,16 @@
                 <table class="table table-bordered table-striped" width="800px">
                     <tr>
                         <td>品牌名称</td>
-                        <td><input class="form-control" placeholder="品牌名称"></td>
+                        <td><input class="form-control" ng-model="entity.name" placeholder="品牌名称"></td>
                     </tr>
                     <tr>
                         <td>首字母</td>
-                        <td><input class="form-control" placeholder="首字母"></td>
+                        <td><input class="form-control" ng-model="entity.firstChar" placeholder="首字母"></td>
                     </tr>
                 </table>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
+                <button class="btn btn-success" data-dismiss="modal" ng-click="save()" aria-hidden="true">保存</button>
                 <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
             </div>
         </div>
