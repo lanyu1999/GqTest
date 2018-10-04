@@ -71,4 +71,11 @@ public class BrandController {
         return Result.fail("删除失败");
     }
 
+    @PostMapping("/search")
+    public PageResult search (@RequestBody TbBrand brand,
+                              @RequestParam(value = "page", defaultValue = "1") Integer page,
+                              @RequestParam(value = "rows", defaultValue = "10")Integer rows){
+        return brandService.search(brand,page,rows);
+    }
+
 }
