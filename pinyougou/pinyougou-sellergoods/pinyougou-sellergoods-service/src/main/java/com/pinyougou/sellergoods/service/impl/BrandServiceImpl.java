@@ -14,11 +14,17 @@ import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
+import java.util.Map;
 
 @Service(interfaceClass = BrandService.class)
 public class BrandServiceImpl extends BaseServiceImpl<TbBrand> implements BrandService {
     @Autowired
     private BrandMapper brandMapper;
+
+    @Override
+    public List<Map<String, Object>> selectOptionList() {
+        return brandMapper.selectOptionList();
+    }
 
     @Override
     public PageResult search(TbBrand brand, Integer page, Integer rows) {

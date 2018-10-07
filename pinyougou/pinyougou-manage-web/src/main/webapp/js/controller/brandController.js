@@ -1,5 +1,5 @@
 app.controller("brandController", function ($scope, $controller, brandService) {
-    $controller("baseController",{$scope:$scope});
+    $controller("baseController", {$scope: $scope});
     // 查询所有列表数据并绑定到 list 对象
     $scope.findAll = function () {
         brandService.findAll().success(function (response) {
@@ -103,5 +103,4 @@ app.controller("brandController", function ($scope, $controller, brandService) {
         });
     };
 
-})
-;
+});

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/brand")
 @RestController
@@ -72,10 +73,15 @@ public class BrandController {
     }
 
     @PostMapping("/search")
-    public PageResult search (@RequestBody TbBrand brand,
-                              @RequestParam(value = "page", defaultValue = "1") Integer page,
-                              @RequestParam(value = "rows", defaultValue = "10")Integer rows){
-        return brandService.search(brand,page,rows);
+    public PageResult search(@RequestBody TbBrand brand,
+                             @RequestParam(value = "page", defaultValue = "1") Integer page,
+                             @RequestParam(value = "rows", defaultValue = "10") Integer rows) {
+        return brandService.search(brand, page, rows);
+    }
+
+    @GetMapping("selectOptionList")
+    public List<Map<String, Object>> selectOptionList() {
+        return  brandService.selectOptionList();
     }
 
 }
